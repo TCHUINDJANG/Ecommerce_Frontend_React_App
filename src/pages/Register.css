@@ -1,0 +1,9 @@
+.register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: solid ;
+    margin-top: 300px;
+    border-radius: 12px;
+}

@@ -1,0 +1,39 @@
+/* Reset complet et garantie de pleine hauteur */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conteneur principal */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  /* Temporaire pour visualisation */
+}
+
+/* Contenu principal */
+main {
+  flex: 1 0 auto; /* Prend tout l'espace disponible */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: white; /* Pour mieux voir la zone */
+}
+
+/* Reset supplémentaire pour éléments */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
