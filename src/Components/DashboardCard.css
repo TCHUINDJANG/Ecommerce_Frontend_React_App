@@ -1,0 +1,39 @@
+.dashboard-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .card-icon {
+    font-size: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #4f46e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-title {
+    font-size: 0.875rem;
+    color: #718096;
+    margin: 0;
+  }
+  
+  .card-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0.25rem 0 0 0;
+  }

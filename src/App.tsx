@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import { AuthProvider } from './contexts/AuthContext';
 import Register from './pages/Register';
 import CategoriesPage from './pages/CategoryPage';
+import UserDashboard from './pages/UserDashbord';
 
 
 const App: React.FC = () => {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
               <Route path="/login/" element={<Login />} />
               <Route path="/register/" element={<Register />} />
               <Route path="/categories/" element={<CategoriesPage />} />
+              <Route path="/dashbord" element={<UserDashboard />}/>
               {/* Ajoutez d'autres routes au besoin */}
             </Routes>
           </main>

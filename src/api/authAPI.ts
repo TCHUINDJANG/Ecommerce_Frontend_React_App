@@ -45,7 +45,7 @@ export const register = async (data: RegisterData): Promise<User> => {
 
 export const fetchUserProfile = async (): Promise<User> => {
     try {
-        const response = await apiClient.get('/auth/profile/');
+        const response = await apiClient.get('/profile/');
         return response.data;
     } catch (error) {
         console.error('Error fetching user profile:' , error);

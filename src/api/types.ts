@@ -15,6 +15,11 @@
   sale_count: number;
   seller: any | null; // Remplacez 'any' par le type approprié si possible
   image: string;
+  promotionInfo?: { // Optionnel
+    name: string;
+    discount: number;
+    type: 'fixed' | 'percentage';
+};
 
 }
 
@@ -57,6 +62,8 @@ export interface User {
   date_joined: string;
   shipping_address?: Address;
   billing_address?: Address;
+  phone:number;
+  adress: Address;
 }
 
 export interface Address {
@@ -107,6 +114,43 @@ export interface OrderItem {
     created_at: string;
     updated_at: string;
   }
+
+  export interface Promotion {
+    id:number,
+    name:string,
+    description:string,
+    discount_type:'fixed' | 'percentage',
+    discount_value:string,
+    start_date: Date,
+    end_date:Date,
+    active: boolean,
+    products:Product[],
+    categories:Category[],
+    min_order_amount:number,
+    code: string,
+    activate:boolean,
+  }
+
+
+  export interface DashbordStats {
+    totalOrders : number ,
+    pendingOrders : number,
+    totalSpent: number;
+    favoriteCategory?: string;
+  }
+
+
+  export interface Address {
+    id: number;
+    street?: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    phone: string;
+    is_default: boolean;
+  }
+  
 
 
 // Interfaces pour les réponses API

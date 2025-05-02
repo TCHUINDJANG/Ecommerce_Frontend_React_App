@@ -1,8 +1,8 @@
 import React from "react";
 import { Product } from '../../api/types';
 import { Link } from 'react-router-dom';
-import { addToCart } from '../../api/cartAPI';
 import { useCart } from '../../contexts/CartContext';
+import { addCart } from "../../api/cartAPI";
 
 
 interface ProductCardProps {
@@ -17,7 +17,7 @@ const ProductCard:React.FC<ProductCardProps> = ({product}) => {
 
     const handleAddCart = async () => {
         try {
-            await addToCart(product.id);
+            await addCart(product.id);
             refreshCart();
         } catch (error) {
             console.error('Error adding to cart:' , error);
@@ -38,7 +38,7 @@ const ProductCard:React.FC<ProductCardProps> = ({product}) => {
                 <Link to={'/products/${product.id}'} className="hover:underline">
                 <h3>{product.name}</h3></Link>
                 <p>{product.description}</p>
-                <p>{product.price.toFixed(2)}</p>
+                <p>{product.price}</p>
                 <button
                 onClick={handleAddCart}>Add to Cart
                 </button>

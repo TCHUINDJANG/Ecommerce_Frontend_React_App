@@ -13,7 +13,7 @@ export const createOrder = async(shippingAdress : string , paymentMethod: string
     }
 }
 
-export const fetchOrders = async (): Promise<Order[]> => {
+export const getOrders = async (): Promise<Order[]> => {
     try {
         const response = await apiClient.get('/orders/');
         return response.data;
