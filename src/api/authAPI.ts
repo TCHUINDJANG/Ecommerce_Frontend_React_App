@@ -52,3 +52,54 @@ export const fetchUserProfile = async (): Promise<User> => {
         throw error;
     }
 }
+
+
+
+export const updateProfile = async (profileData: Partial<User>): Promise<User> => {
+    try {
+        const response = await apiClient.put('/profile/update/' , profileData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user profile:' , error);
+        throw error;
+    }
+}
+
+
+
+export const logout = async (): Promise<void> => {
+    try {
+        await apiClient.post('auth/logout/');
+    } catch (error) {
+        console.error('Logout error' , error);
+        throw error;
+    }
+}
+
+
+
+
+
+
+// {
+//     "first_name":"test123",
+//     "password":"123412",
+//     "last_name":"Davidos1",
+//     "email":"tankeudavidos@gmail.com",
+//     "username":"Paul123"
+    
+//   }
+
+
+
+// {
+//     "product":  1,
+//     "is_approved": "True",
+//     "country": "Afrique",
+//     "postal_code": "BP1234",
+//     "comment": "Ce produit est vraiment utile et m'a beaucoup aide",
+//     "rating": 5
+  
+  
+//   }
+
