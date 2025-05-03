@@ -11,6 +11,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Register from './pages/Register';
 import CategoriesPage from './pages/CategoryPage';
 import UserDashboard from './pages/UserDashbord';
+import ProductList from './Components/Products/ProductList';
 
 
 
@@ -38,6 +39,7 @@ const App: React.FC = () => {
               <Route path="/register/" element={<Register />} />
               <Route path="/categories/" element={<CategoriesPage />} />
               <Route path="/dashboard" element={<UserDashboard />}/>
+              <Route path="/products" element={<ProductList />}/>
               {/* Ajoutez d'autres routes au besoin */}
             </Routes>
           </main>

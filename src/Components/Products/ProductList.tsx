@@ -1,23 +1,53 @@
-import React from 'react';
+import React, { useEffect , useState } from 'react';
 import { Product } from '../../api/types';
 import './ProductList.css';
 import { useNavigate } from 'react-router-dom';
+import { fetchProducts } from '../../api/productAPI';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 interface ProductListProps {
-  products: Product[];
+  initialProducts?: Product[];
 }
 
-
-
-
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
-
+const ProductList: React.FC<ProductListProps> = ({ initialProducts = [] }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [products, setProducts] = useState<Product[]>(initialProducts);;
+  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  
+
+  
+  
 
   const handleProductClick = (productId: number) => {
     navigate(`/products/${productId}`);
   };
 
+
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const products= await fetchProducts({search : searchQuery})
+        setProducts(products.results)
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'Failed to load data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  } , [searchQuery]);
+
+
+
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <div>Error: {error}</div>;
   if (!products || products.length === 0) {
     return <div>No products available</div>;
   }

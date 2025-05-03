@@ -119,7 +119,7 @@ const Home: React.FC = () => {
             <section className="featured-section">
                 <h2 className="section-title">Produits en promotion</h2>
                 {promotedProducts.length ? (
-                    <ProductList products={promotedProducts} />
+                    <ProductList  />
                 ) : (
                     <p>Aucun produit en promotion</p>
                 )}
@@ -155,7 +155,7 @@ const Home: React.FC = () => {
             {/* Tous les produits */}
             <section className="all-products-section">
                 <h2 className="section-title">Nos Produits</h2>
-                <ProductList products={productsData.results} />
+                <ProductList  />
             </section>
 
             {/* Quick Links */}

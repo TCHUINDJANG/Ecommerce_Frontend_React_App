@@ -1,11 +1,12 @@
 import React, {useEffect , useState} from "react";
 import { fetchCart , updateCartItem , removeFormCart } from "../../api/cartAPI";
 import { CartItem } from '../api/types';
-import LoadindSpinner from '../Components/common/LoadindSpinner';
 import ErrorMessage from '../Components/common/ErrorMessage';
 import CartItemComponent from '../Components/cart/CartItem';
-import CartSummary from '../Components/cart/CartSummary';
+// import CartSummary from '../Components/cart/CartSummary';
 import {Link} from 'react-router-dom';
+import LoadingSpinner from "../Components/common/LoadingSpinner";
+
 
 
 
