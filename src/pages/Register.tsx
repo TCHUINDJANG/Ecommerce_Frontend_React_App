@@ -23,7 +23,7 @@ const Register: React.FC = () => {
         e.preventDefault();
         try {
             await register(username, email, password, first_name, last_name );
-            navigate('/')
+            navigate('/login')
         } catch (error) {
             setError('Registration failed. Please try again.');
             console.error('Registration error:', error);

@@ -1,86 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { getOrders } from '../api/orderAPI';
+import { getOrdersResponse } from '../api/orderAPI';
 import { fetchUserProfile } from '../api/authAPI';
-// import { fetchStatsApi } from '../api/StatsApi';
-import { User , Order } from '../api/types';
-
-
+import { User, OrdersResponse } from '../api/types';
 import UserProfile from '../Components/UserProfile';
 import OrderHistory from '../Components/OrderHistory';
-// import DashboardCard from '../Components/DashbordCard';
 import './UserDashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [orders, setOrders] = useState<Order[]>([]);
-//   const [stats, setStats] = useState<DashbordStats | null>(null);
+  const [ordersResponse, setOrdersResponse] = useState<OrdersResponse | null>(null);
   const [activeTab, setActiveTab] = useState<'profile' | 'orders'>('profile');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
+
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+
         const [userData, ordersData] = await Promise.all([
-            fetchUserProfile(),
-          getOrders(),
-        //   fetchStatsApi()
+          fetchUserProfile().catch(err => {
+            throw new Error(`Failed to fetch user profile: ${err.message}`);
+          }),
+          getOrdersResponse().catch(err => {
+            throw new Error(`Failed to fetch orders: ${err.message}`);
+          })
         ]);
-        
+
+        if (!userData) {
+          throw new Error('User data not found');
+        }
+
         setUser(userData);
-        setOrders(ordersData);
-        // setStats(statsData);
+        setOrdersResponse(ordersData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load data');
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        if (err instanceof Error && err.message.includes('authentication')) {
+          navigate('/login');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
-  if (loading) return <div className="dashboard-loading">Loading...</div>;
-  if (error) return <div className="dashboard-error">{error}</div>;
-  if (!user) return <div className="dashboard-error">User not found</div>;
+  const renderContent = () => {
+    if (loading) {
+      return <div className="dashboard-loading">Loading...</div>;
+    }
 
-  return (
-    <div className="user-dashboard">
-      <div className="dashboard-container">
-        {/* Header */}
+    if (error) {
+      return <div className="dashboard-error">{error}</div>;
+    }
+
+    if (!user) {
+      return <div className="dashboard-error">User not found</div>;
+    }
+
+    return (
+      <>    
         <div className="dashboard-header">
           <h1>Mon Tableau de Bord</h1>
-          <p>Bienvenue, {user.first_name} ! Voici votre activité récente.</p>
+          <p>Bienvenue, {user?.first_name || 'Utilisateur'} ! Voici votre activité récente.</p>
         </div>
 
-        {/* Stats Cards */}
-        {/* {stats && (
-          <div className="dashboard-stats">
-            <DashboardCard 
-              title="Commandes totales" 
-              value={stats.totalOrders.toString()} 
-              icon="📦"
-            />
-            <DashboardCard 
-              title="Commandes en cours" 
-              value={stats.pendingOrders.toString()} 
-              icon="⏳"
-            />
-            <DashboardCard 
-              title="Total dépensé" 
-              value={`${stats.totalSpent.toFixed(2)} €`} 
-              icon="💶"
-            />
-            <DashboardCard 
-              title="Catégorie préférée" 
-              value={stats.favoriteCategory || "N/A"} 
-              icon="❤️"
-            />
-          </div>
-        )} */}
-
-        {/* Navigation */}
         <div className="dashboard-tabs">
           <button
             onClick={() => setActiveTab('profile')}
@@ -92,18 +86,26 @@ const UserDashboard: React.FC = () => {
             onClick={() => setActiveTab('orders')}
             className={activeTab === 'orders' ? 'active' : ''}
           >
-            Mes Commandes ({orders.length})
+            Mes Commandes ({ordersResponse?.results?.length || 0})
           </button>
         </div>
 
-        {/* Content */}
+
         <div className="dashboard-content">
           {activeTab === 'profile' ? (
-            <UserProfile user={user} onUpdate={setUser} />
+            <OrderHistory orders={ordersResponse?.results || []} />
           ) : (
-            <OrderHistory orders={orders} />
+            <UserProfile user={user} onUpdate={setUser} />
           )}
         </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="user-dashboard">
+      <div className="dashboard-container">
+        {renderContent()}
       </div>
     </div>
   );

@@ -53,9 +53,9 @@ export interface Cart  {
 
 // Interfaces pour les utilisateurs
 export interface User {
-    id:number;
-    email:string;
-    first_name: string;
+  id:number;
+  email:string;
+  first_name: string;
   last_name: string;
   is_active: boolean;
   is_staff: boolean;
@@ -80,19 +80,34 @@ export interface Address {
 // Interfaces pour les commandes
 export interface Order {
    id: number;
-  user: number;
-  order_number: string;
+  order_number?: string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   items: OrderItem[];
-  shipping_address: Address;
-  billing_address: Address;
+    
+  promotion?: {
+    name: string;
+    discount_value: string;
+  };
+
+  coupon?: {
+    code: string;
+    discount: number;
+  };
+  shipping_address?: string;
+  billing_address?: string;
   subtotal: number;
   shipping_cost: number;
   tax: number;
-  total: number;
+  total:string | number;
   payment_method: string;
   created_at: string;
   updated_at: string;
+  user : {
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
 }
 
 
@@ -150,6 +165,15 @@ export interface OrderItem {
     phone: string;
     is_default: boolean;
   }
+
+
+
+export interface OrdersResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Order[];
+}
   
 
 

@@ -13,6 +13,7 @@ import CategoriesPage from './pages/CategoryPage';
 import UserDashboard from './pages/UserDashbord';
 
 
+
 const App: React.FC = () => {
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
@@ -36,7 +37,7 @@ const App: React.FC = () => {
               <Route path="/login/" element={<Login />} />
               <Route path="/register/" element={<Register />} />
               <Route path="/categories/" element={<CategoriesPage />} />
-              <Route path="/dashbord" element={<UserDashboard />}/>
+              <Route path="/dashboard" element={<UserDashboard />}/>
               {/* Ajoutez d'autres routes au besoin */}
             </Routes>
           </main>

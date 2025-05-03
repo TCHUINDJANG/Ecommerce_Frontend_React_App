@@ -16,15 +16,16 @@ export interface RegisterData {
     last_name: string;
 }
 
-export const login = async (data: LoginData): Promise<{user:User; token:string}> => {
+export const login = async (username: string, password: string) => {
     try {
         const response = await apiClient.post('/auth/login/' , {
-            username:data.username,
-            password:data.password
-        }, 
+            username, password } , {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
            
-        );
-        return response.data;
+        return response;
     } catch (error) {
         console.error('Login error:' , error);
         throw error;
@@ -45,7 +46,13 @@ export const register = async (data: RegisterData): Promise<User> => {
 
 export const fetchUserProfile = async (): Promise<User> => {
     try {
-        const response = await apiClient.get('/profile/');
+        const token = localStorage.getItem('access_token');
+        if(!token) throw new Error('No token found');
+        const response = await apiClient.get('/profile/' , {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching user profile:' , error);
@@ -69,6 +76,7 @@ export const updateProfile = async (profileData: Partial<User>): Promise<User> =
 
 export const logout = async (): Promise<void> => {
     try {
+        
         await apiClient.post('auth/logout/');
     } catch (error) {
         console.error('Logout error' , error);

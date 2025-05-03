@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../Components/common/ErrorMessage';
 import { useAuth } from "../contexts/AuthContext";
 import './Login.css';
+import axios from 'axios';
 
 
 const Login:React.FC = () => {
@@ -13,14 +14,24 @@ const Login:React.FC = () => {
     const navigate = useNavigate();
 
 
-    const handleSubmit = async(e: React.FormEvent)  => {
+    const handleSubmit = async (e: React.FormEvent)  => {
         e.preventDefault();
         try {
-            await login(username , password);
-            navigate('/')
-        } catch (error) {
-            setError('Invalid username or password');
+             await login(username , password);
+            navigate('/dashboard');
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                console.error('Login error:', err);
+                setError(err.response?.data?.message || 'Invalid username or password');
+            } else if (err instanceof Error) {
+                console.error('Login error:', err);
+                setError(err.message);
+            } else {
+                console.error('Unexpected login error:', err);
+                setError('An unexpected error occurred');
+            }
         }
+        
     };
 
     return (
@@ -40,10 +51,10 @@ const Login:React.FC = () => {
                 </div>
 
                 <div className="login-username">
-                    <label htmlFor="passowrd" className="login-usernamess">Passowrd</label>
+                    <label htmlFor="password" className="login-usernamess">Passowrd</label>
                     <input
-                    id="passowrd"
-                    type="passowrd"
+                    id="password"
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="login-input"
