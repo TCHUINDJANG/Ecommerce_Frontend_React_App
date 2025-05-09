@@ -140,11 +140,11 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders, className }) => {
               <div className="order-addresses">
                 <div className="address">
                   <h4>Adresse de livraison</h4>
-                  <p>{order.shipping_address || 'Non spécifiée'}</p>
+                  <p>{order.shipping_address.city || 'Non spécifiée'}</p>
                 </div>
                 <div className="address">
                   <h4>Adresse de facturation</h4>
-                  <p>{order.billing_address || 'Non spécifiée'}</p>
+                  <p>{order.billing_address.city || 'Non spécifiée'}</p>
                 </div>
               </div>
             </div>

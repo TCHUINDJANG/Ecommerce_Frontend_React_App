@@ -166,7 +166,7 @@ const Home: React.FC = () => {
                 <button onClick={() => navigate('/cart')}>
                     <i className="fas fa-shopping-cart"></i> Mon panier
                 </button>
-                <button onClick={() => navigate('/account')}>
+                <button onClick={() => navigate('/profile')}>
                     <i className="fas fa-user"></i> Mon compte
                 </button>
             </nav>

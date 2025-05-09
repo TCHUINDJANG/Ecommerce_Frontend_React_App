@@ -1,78 +1,110 @@
-import React, { createContext, useContext, useState } from 'react';
-import { Cart, Product } from '../api/types';
-
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { CartResponse, Product } from '../api/types';
+import { fetchCart, addCart, removeFormCart, updateCartItem } from '../api/cartAPI';
 
 interface CartItem {
-  productId:number;
-  quantity:number;
-  product:Product;
+  id: number; 
+  product: Product;
+  quantity: number;
+  price: number; 
 }
 
 interface CartContextType {
-  cartItems: CartItem[]; // Remplacez 'any' par votre type d'article
-  addToCart: (product: any , quantity: number) => void;
-  removeFromCart: (productId: number) => void;
-  refreshCart: () => void; // Ajoutez cette ligne
+  cartItems: CartItem[];
+  loading: boolean;
+  error: string | null;
+  addToCart: (product: Product, quantity: number) => Promise<void>;
+  removeFromCart: (itemId: number) => Promise<void>;
+  updateQuantity: (itemId: number, quantity: number) => Promise<void>;
+  refreshCart: () => Promise<void>;
   cartItemsCount: number;
-//   updateQuantity: (productId: number, newQuantity: number) => void;
-    cardTotal: number;
-  
+  cartTotal: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Calcul des dérivés du panier
+const cartItemsCount = cartItems?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
 
+const cartTotal = cartItems?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
 
-  const addToCart = (product: Product , quantity: number) => {
-    setCartItems(prevItems => {
-        const existingItem = prevItems.find(item =>item.productId ==product.id);
-
-        if(existingItem) {
-            return prevItems.map(item => 
-                item.productId === product.id ?
-                { ...item , quantity: item.quantity + quantity }: item
-            );
-        } else {
-            return [...prevItems , { productId: product.id, quantity, product }];
-        }
-    });
-  };
-
-
-  const cartItemsCount = cartItems.reduce((total, item) => total +item.quantity , 0);
-
-  const cardTotal = cartItems.reduce(
-    (total , item) => total + (item.quantity * item.product.current_price) , 0);
-  
-
-  const removeFromCart = (productId: number) => {
-    setCartItems(cartItems.filter(item => item.id !== productId));
-  };
-
-
-  // Ajoutez cette fonction
   const refreshCart = async () => {
     try {
-      // Implémentez la logique pour rafraîchir le panier
-      // Par exemple :
-      // const updatedCart = await fetchCart();
-      // setCartItems(updatedCart);
-    } catch (error) {
-      console.error('Error refreshing cart:', error);
+      setLoading(true);
+      // const data = await fetchCart();
+      // setCartItems(data.items);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load cart');
+      console.error('Error refreshing cart:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const addToCart = async (product: Product, quantity: number) => {
+    try {
+      setLoading(true);
+      await addCart(product.id, quantity);
+      await refreshCart();
+    } catch (err) {
+      setError('Failed to add item to cart');
+      console.error('Error adding to cart:', err);
+    }
+  };
+
+  const removeFromCart = async (itemId: number) => {
+    try {
+      setLoading(true);
+      await removeFormCart(itemId);
+      await refreshCart();
+    } catch (err) {
+      setError('Failed to remove item from cart');
+      console.error('Error removing from cart:', err);
+    }
+  };
+
+  const updateQuantity = async (itemId: number, quantity: number) => {
+    try {
+      setLoading(true);
+      await updateCartItem(itemId, quantity);
+      await refreshCart();
+    } catch (err) {
+      setError('Failed to update item quantity');
+      console.error('Error updating quantity:', err);
+    }
+  };
+
+  // Chargement initial du panier
+  useEffect(() => {
+    refreshCart();
+  }, []);
+
   return (
-    <CartContext.Provider value={{ cartItems,  removeFromCart , refreshCart ,cartItemsCount , addToCart , cardTotal}}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        loading,
+        error,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        refreshCart,
+        cartItemsCount,
+        cartTotal
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
-// Exportez explicitement le hook useCart
 export const useCart = () => {
   const context = useContext(CartContext);
   if (context === undefined) {

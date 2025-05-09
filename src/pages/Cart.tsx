@@ -1,99 +1,124 @@
-import React, {useEffect , useState} from "react";
-import { fetchCart , updateCartItem , removeFormCart } from "../../api/cartAPI";
-import { CartItem } from '../api/types';
-import ErrorMessage from '../Components/common/ErrorMessage';
-import CartItemComponent from '../Components/cart/CartItem';
-// import CartSummary from '../Components/cart/CartSummary';
-import {Link} from 'react-router-dom';
-import LoadingSpinner from "../Components/common/LoadingSpinner";
+import React , { useEffect , useState} from "react";
+import { CartItem } from "../api/types";
+import { removeFormCart , updateCartItem , fetchCart } from "../api/cartAPI";
+import CartItemComponent from "../Components/CartItemComponent";
+import { CartResponse } from "../api/types";
+import './cart.css';
+import { fetchProductById } from "../api/productAPI";
 
 
 
 
-const Cart: React.FC = () => {
-    const [cartItems , setCartItems] = useState<CartItem[]>([]);
-    const [loading , setLoading] = useState(true);
-    const [error , setError] = useState<string | null>(null);
+
+const Cart:React.FC = () => {
+  const [cart, setCart] = useState<CartResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
 
-    useEffect(() => {
+    useEffect(()  => {
         const loadCart = async () => {
             try {
-                const items = await fetchCart();
-                setCartItems(items);
+                const cartData = await fetchCart();
+                console.log("Réponse du backend:", cartData)
+
+                if (!cartData){
+                  setError('Impossible de charger le panier');
+                  return ;
+                }  
+
+
+                const itemsWithProducts = await Promise.all(
+                  cartData.items.map(async (item) => {
+                    const productDetails = await fetchProductById(item.id);
+                    return {
+                      ...item , 
+                      product:productDetails,
+                      unit_price: productDetails.price
+                    };
+                  })
+                );
+                setCart({
+                  ...cartData,
+                  items:itemsWithProducts
+                  
+                }); 
             } catch (error) {
-               setError(err instanceof Error ? err.message: 'Failed to load cart'); 
+                console.error('Failed to load cart', error);
+                setError('Failed to load cart. Please try again later.');
             } finally {
                 setLoading(false);
             }
         };
-
         loadCart();
     } , []);
 
+
+
+
     
-    const handleUpdateQuantity = async (itemId:number , newQuantity:number) => {
-        try {
-            const updateItem = await updateCartItem(itemId , newQuantity);
-            setCartItems(cartItems.map(item => 
-                item.id === itemId ? updateItem : item
-             ));
-        } catch (error) {
-            console.error('Error updating cart item' , error);
+
+    const handleUpdateQuantity = async (itemId: number, quantity: number) => {
+      try {
+          await updateCartItem(itemId, quantity);
+          if (cart) {
+              setCart({
+                  ...cart,
+                  items: cart.items.map(item => 
+                      item.id === itemId ? { ...item, quantity } : item
+                  )
+              });
+          }
+      } catch (error) {
+          console.error('Failed to update item', error);
+      }
+  };
+
+  const handleRemoveItem = async (itemId: number) => {
+    try {
+        await removeFormCart(itemId);
+        if (cart) {
+            setCart({
+                ...cart,
+                items: cart.items.filter(item => item.id !== itemId)
+            });
         }
-    };
+    } catch (error) {
+        console.error('Failed to remove item', error); 
+    }
+};
 
 
-    const handleRemoveItem = async (itemId : number) => {
-        try {
-            await removeFormCart(itemId);
-            setCartItems(cartItems.filter(item => item.id !== itemId))
-        } catch (error) {
-            console.error('Error removing cart item' , error);
-        }
-    };
-
-
-    if (loading) return <LoadindSpinner />;
-    if (error) return <ErrorMessage message={error} />
-
+    if (loading) return <div className="loading-spinner">Loading cart...</div>; 
+    if (error) return <div className="error-message">{error}</div>;
 
     return (
         <div className="cart-container">
-            <h1 className="cart-title">Votre Panier</h1>
-
-          {cartItems.length === 0 ? (
-            <div className="empty-card">
-                <p className="text">Your cart is empty</p>
-                <Link
-                to="/"
-                className="text-link">
-                    Continuer a ajouter dans le panier
-                </Link>
-          ) : (
-            <div className="card_grid">
-                <div className="col_grid">
-                    {cartItems.map(item => (
-                       <CartItemComponent
-                       key={item.id}
-                       item={item}
-                       onUpdateQuantity={handleUpdateQuantity}
-                       onRemove= {handleRemoveItem} />
-                    ))}
-                </div>
-            </div>
-            <CartSummary items={cartItems} />
-            <Link
-            to="/checkout"
-            className="checkout">
-                Proceded to checkout
-            </Link>
-            </div>
-            
-          )}
-        </div>
-    );
+      <h2>Votre Panier</h2>
+      {!cart  ? (
+        <p>Votre panier est vide</p>
+      ) : (
+        <>
+          <div className="cart-items">
+            {cart.items.map(item => (
+              <CartItemComponent
+                key={item.id}
+                item={item}
+                onUpdateQuantity={handleUpdateQuantity}
+                onRemove={handleRemoveItem}
+              />
+            ))}
+          </div>
+          <div className="cart-summary">
+            <h3>
+              Total: €{cart.total_price.toFixed(2)}
+            </h3>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Cart;
-
+    

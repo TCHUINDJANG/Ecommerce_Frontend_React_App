@@ -1,18 +1,27 @@
 import apiClient from "./axiosConfig";
-import { Order } from './types';
+import { Address, Order, PaymentMethod } from './types';
 import { OrdersResponse } from "./types";
 
 
 
-export const createOrder = async(shippingAdress : string , paymentMethod: string) : Promise<Order> => {
+// Dans orderAPI.ts
+export const createOrder = async (orderData: {
+    shipping_address: Address;
+    payment_method: PaymentMethod;
+    items: Array<{
+        product_id: number;
+        quantity: number;
+        price: number;
+    }>;
+}): Promise<Order> => {
     try {
-        const response = await apiClient.post('/orders/' , {shipping_Adress: shippingAdress , payement_method :paymentMethod });
+        const response = await apiClient.post('/orders/', orderData);
         return response.data;
     } catch (error) {
-        console.error('Error creating order:' , error);
+        console.error('Error creating order:', error);
         throw error;
     }
-}
+};
 
 export const getOrders = async (): Promise<Order[]> => {
     try {
@@ -86,7 +95,7 @@ export const getOrdersResponse = async (): Promise<OrdersResponse> => {
 
 
 
-export const fetchOrderById = async (orderId: number): Promise<Order> => {
+export const fetchOrderById = async (orderId: string): Promise<Order> => {
     try {
         const response = await apiClient.get(`/orders/${orderId}/`);
         return response.data;

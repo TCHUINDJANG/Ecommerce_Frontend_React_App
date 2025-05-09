@@ -5,9 +5,16 @@
     margin: 0 auto;
     padding: 20px;
     font-family: 'Arial', sans-serif;
-    margin-top: 900px;
+    /* Suppression de la marge excessive */
+    margin-top: 20px;
+    /* Garantir que tout le contenu est visible */
+    overflow: visible;
+    min-height: 100vh;
 }
 
+.header-space {
+    height: 80px; /* Ajustez selon la hauteur de votre header */
+}
 
 /* Hero Banner */
 .hero-banner {
@@ -16,9 +23,13 @@
     padding: 60px 20px;
     text-align: center;
     border-radius: 8px;
-    margin-bottom: 40px;
+    margin: 0 0 40px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Garantir la visibilité */
+    position: relative;
+    z-index: 10;
 }
+
 
 .hero-title {
     font-size: 2.5rem;
@@ -63,9 +74,10 @@
     border-radius: 2px;
 }
 
-/* Promotions */
 .promotions-section {
     margin: 40px 0;
+    position: relative;
+    z-index: 10;
 }
 
 .promotions-list {

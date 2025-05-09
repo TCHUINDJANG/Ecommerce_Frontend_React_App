@@ -14,8 +14,9 @@
 }
 
 .orders-container {
-  display: grid;
-  gap: 20px;
+  display: flex;
+  flex-direction:row;
+  gap: 30px;
   margin-top: 20px;
 }
 

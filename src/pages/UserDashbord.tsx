@@ -72,7 +72,7 @@ const UserDashboard: React.FC = () => {
       <>    
         <div className="dashboard-header">
           <h1>Mon Tableau de Bord</h1>
-          <p>Bienvenue, {user?.first_name || 'Utilisateur'} ! Voici votre activité récente.</p>
+          <p>Bienvenue, {user?.user.first_name || 'Utilisateur'} ! Voici votre activité récente.</p>
         </div>
 
         <div className="dashboard-tabs">
@@ -92,12 +92,9 @@ const UserDashboard: React.FC = () => {
 
 
         <div className="dashboard-content">
-          {activeTab === 'profile' ? (
-            <OrderHistory orders={ordersResponse?.results || []} />
-          ) : (
-            <UserProfile user={user} onUpdate={setUser} />
-          )}
-        </div>
+        <UserProfile user={user} onUpdate={setUser} />
+        {activeTab === 'profile' && <OrderHistory orders={ordersResponse?.results || []} />}
+</div>
       </>
     );
   };

@@ -28,14 +28,14 @@ export const AuthProvider: React.FC<{children:React.ReactNode}> = ({ children })
     useEffect(() => {
         const loadUser = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('access_token');
                 if(token){
                     const userData = await fetchUserProfile();
                     setUser(userData);
                 }
             } catch (error) {
                 console.error('Failed to load user' , error);
-                localStorage.removeItem('token');
+                localStorage.removeItem('access_token');
             }finally {
                 setLoading(false);
             }

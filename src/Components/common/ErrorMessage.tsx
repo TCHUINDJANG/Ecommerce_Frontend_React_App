@@ -2,6 +2,8 @@ import React from 'react';
 
 interface ErrorMessageProps {
   message: string;
+  onRetry?: () => void;
+  className?: string;
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {

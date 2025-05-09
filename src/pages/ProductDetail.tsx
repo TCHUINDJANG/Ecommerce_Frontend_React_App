@@ -4,6 +4,7 @@ import { Product } from "../api/types";
 import './ProductsDetail.css';
 import { fetchProductById } from "../api/productAPI";
 import { useCart } from "../contexts/CartContext";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -13,12 +14,15 @@ const ProductDetails: React.FC = () => {
     const [loading , setLoading] = useState(true);
     const [error , setError] = useState<string | null>(null);
     const { addToCart} = useCart();
+    const navigate = useNavigate();
 
 
 
     const handleAddToCart = () => {
         if(!product) return ;
         addToCart(product , 1)
+        navigate('/checkout')
+        
     };
     
 
@@ -30,6 +34,7 @@ const ProductDetails: React.FC = () => {
                 if(!id) return ;
                 const productData = await fetchProductById(parseInt(id));
                 setProduct(productData);
+                console.log("Mes datas sont" , productData)
             } catch (error) {
                 setError('Failed to load detail product');
                 console.error(error);

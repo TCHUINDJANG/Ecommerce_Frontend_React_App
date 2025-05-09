@@ -27,12 +27,18 @@ const ProductList: React.FC<ProductListProps> = ({ initialProducts = [] }) => {
 
 
 
+  // const handleProductListClick = () => {
+  //   navigate('/products'); // Redirection vers la liste des produits
+  // }
+
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
         setLoading(true);
         const products= await fetchProducts({search : searchQuery})
         setProducts(products.results)
+        console.log("Mes donnnees envoyees sont" , products)
       } catch (error) {
         setError(error instanceof Error ? error.message : 'Failed to load data');
       } finally {
@@ -57,7 +63,7 @@ const ProductList: React.FC<ProductListProps> = ({ initialProducts = [] }) => {
       {products.map((product) => (
         <div key={product.id} className="productList-image" 
         onClick={() => handleProductClick(product.id)}
-        style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer' }}
         >
           <img 
             src={product.image} 

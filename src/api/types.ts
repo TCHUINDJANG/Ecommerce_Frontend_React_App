@@ -5,7 +5,7 @@
   name: string;
   slug: string;
   description: string;
-  price: string;
+  price: number;
   discount_price: string | null;
   current_price: string;
   stock: number;
@@ -14,7 +14,7 @@
   updated_at: string;
   sale_count: number;
   seller: any | null; // Remplacez 'any' par le type approprié si possible
-  image: string;
+  image?: string;
   promotionInfo?: { // Optionnel
     name: string;
     discount: number;
@@ -35,11 +35,20 @@ export interface Category {
 // Interfaces pour le panier
 export interface CartItem {
     id:number;
-    product:Product;
+    product: {
+      id:number;
+      name:string;
+      price:number;
+      image?:string;
+    };
+
     quantity:number;
     price_at_addition:string;
     added_at:string;
+    price: number;
+    total_price: number;
 }
+
 
 export interface Cart  {
     id:number;
@@ -54,26 +63,35 @@ export interface Cart  {
 // Interfaces pour les utilisateurs
 export interface User {
   id:number;
-  email:string;
-  first_name: string;
-  last_name: string;
+
+  user : {
+    email:string;
+    first_name: string;
+    last_name: string;
+  };
+  phone:number;
+
+  address?: {
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+  };
   is_active: boolean;
   is_staff: boolean;
   date_joined: string;
-  shipping_address?: Address;
-  billing_address?: Address;
-  phone:number;
-  adress: Address;
+  shipping_address: Address;
+  billing_address: Address;
 }
 
-export interface Address {
-    id:number;
-    city:string;
-    state:string;
-    postal_code:string;
-    country:string;
-    phone:string;
-    is_default:boolean;
+export interface PaymentMethod {
+  method_type: 'credit_card' | 'paypal' | 'bank_transfer';
+  details: {
+    card_number?: string;
+    exp_month?: string;
+    exp_year?: string;
+    cvc?: string;
+  };
 }
 
 
@@ -93,13 +111,13 @@ export interface Order {
     code: string;
     discount: number;
   };
-  shipping_address?: string;
-  billing_address?: string;
+  shipping_address: Address;
+  billing_address: Address;
   subtotal: number;
   shipping_cost: number;
   tax: number;
-  total:string | number;
-  payment_method: string;
+  total: number;
+  payment_method: PaymentMethod;
   created_at: string;
   updated_at: string;
   user : {
@@ -155,15 +173,22 @@ export interface OrderItem {
   }
 
 
-  export interface Address {
-    id: number;
-    street?: string;
+export interface Address {
+    street: string;
     city: string;
     state: string;
-    postal_code: string;
+    zip_code: string;
     country: string;
-    phone: string;
-    is_default: boolean;
+    is_default?: boolean;
+  }
+
+
+  export interface CartResponse {
+    id: number;
+    user: number;
+    items: CartItem[];
+    created_at: string;
+    total_price: number;
   }
 
 

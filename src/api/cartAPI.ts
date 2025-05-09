@@ -1,10 +1,11 @@
 import apiClient from "./axiosConfig";
 import { CartItem } from "./types";
+import { CartResponse } from "./types";
 
 
 
 
-export const fetchCart = async (): Promise<CartItem[]> => {
+export const fetchCart = async (): Promise<CartResponse> => {
     try {
         const token = localStorage.getItem('access_token');
         if(!token) throw new Error('No token found');
@@ -22,7 +23,7 @@ export const fetchCart = async (): Promise<CartItem[]> => {
 
 export const addCart = async (productId:number , quantity:number = 1) : Promise<CartItem> => {
     try {
-        const response = await apiClient.post('create-cart/' , {product_id: productId ,quantity });
+        const response = await apiClient.post('cart/add/' , {product_id: productId ,quantity });
         return response.data;
     } catch (error) {
         console.error('Error adding to cart:' , error);

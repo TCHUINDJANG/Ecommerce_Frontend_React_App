@@ -8,8 +8,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import UserProfile from './pages/UserProfile';
 import OrderHistory from './pages/OrderHistory';
-import ProtectedRoute from './components/common/ProtectedRoute';
-import Layout from './components/common/Layout';
+import ProtectedRoute from './Components/common/ProtectedRoute';
+import Layout from './Components/common/Layout';
+import OrderHistory from './Components/OrderHistory';
+
 
 const AppRoutes: React.FC = () => {
   return (

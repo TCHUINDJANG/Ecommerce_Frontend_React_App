@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { User } from '../api/types';
 import './UserProfile.css';
+// import { AuthProvider } from '../contexts/AuthContext';
+
+
+
+
+
+
+
+
 
 interface UserProfileProps {
   user: User;
@@ -19,16 +28,36 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
     }));
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     setFormData(prev => ({
       ...prev,
-      address: {
-        ...prev.adress,
-        [name]: value
-      }
+      phone: Number(value)
     }));
   };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => {
+      const currentAddress = prev.address || {
+        city: '',
+        state: '',
+        postal_code: '',
+        country: ''
+      };
+      
+      return {
+        ...prev,
+        address: {
+          ...currentAddress,
+          [name]: value
+        }
+      };
+    });
+  };
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +85,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
               <input
                 type="text"
                 name="first_name"
-                value={formData.first_name}
+                value={formData.user.first_name}
                 onChange={handleChange}
                 required
               />
@@ -66,7 +95,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
               <input
                 type="text"
                 name="last_name"
-                value={formData.last_name}
+                value={formData.user.last_name}
                 onChange={handleChange}
                 required
               />
@@ -76,7 +105,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                value={formData.user.email}
                 onChange={handleChange}
                 required
               />
@@ -87,7 +116,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
                 type="tel"
                 name="phone"
                 value={formData.phone}
-                onChange={handleChange}
+                onChange={handlePhoneChange}
               />
             </div>
             <div className="form-group full-width">
@@ -98,7 +127,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
                   <input
                     type="text"
                     name="city"
-                    value={formData.adress?.city || ''}
+                    value={formData.address?.city || ''}
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -107,7 +136,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
                   <input
                     type="text"
                     name="state"
-                    value={formData.adress?.state || ''}
+                    value={formData.address?.state || ''}
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -116,7 +145,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
                   <input
                     type="text"
                     name="postal_code"
-                    value={formData.adress?.postal_code || ''}
+                    value={formData.address?.postal_code || ''}
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -125,7 +154,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
                   <input
                     type="text"
                     name="country"
-                    value={formData.adress?.country || ''}
+                    value={formData.address?.country || ''}
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -140,16 +169,16 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
         <div className="profile-view">
           <div className="info-grid">
             <div className="info-item">
-              <span className="info-label">Prénom</span>
-              <span className="info-value">{user.first_name}</span>
+              <span className="info-label">Prénoms</span>
+              <span className="info-value">{user.user.last_name}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Nom</span>
-              <span className="info-value">{user.last_name}</span>
+              <span className="info-value">{user.user.last_name}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Email</span>
-              <span className="info-value">{user.email}</span>
+              <span className="info-value">{user.user.email}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Téléphone</span>
@@ -157,25 +186,25 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdate }) => {
             </div>
           </div>
           
-          {user.adress && (
+          {user.address && (
             <div className="address-section">
               <h3>Adresse</h3>
               <div className="address-info-grid">
                 <div className="info-item">
                   <span className="info-label">Ville</span>
-                  <span className="info-value">{user.adress.city}</span>
+                  <span className="info-value">{user.address.city}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Région</span>
-                  <span className="info-value">{user.adress.state}</span>
+                  <span className="info-value">{user.address.state}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Code postal</span>
-                  <span className="info-value">{user.adress.postal_code}</span>
+                  <span className="info-value">{user.address.postal_code}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Pays</span>
-                  <span className="info-value">{user.adress.country}</span>
+                  <span className="info-value">{user.address.country}</span>
                 </div>
               </div>
             </div>

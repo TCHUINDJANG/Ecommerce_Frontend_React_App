@@ -1,0 +1,49 @@
+/* Customer Details */
+.customer-details {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .detail-group h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+  }
+  
+  .detail-group address {
+    font-style: normal;
+    line-height: 1.6;
+  }
+  
+  /* Order Items - Enhanced */
+  .order-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  
+  .item-image {
+    width: 60px;
+    height: 60px;
+    background: var(--light-gray);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .item-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .item-quantity {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+  }

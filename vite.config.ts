@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [react()],
 
   server: {
+    port: 5174,
+    watch: {
+      usePolling: true,
+      interval: 100
+    },
     proxy: {
       '/media': {
         target: 'http://localhost:8000',

@@ -1,0 +1,72 @@
+/* Checkout.css */
+.checkout-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .checkout-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .checkout-steps::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ecf0f1;
+    z-index: 1;
+  }
+  
+  .step {
+    position: relative;
+    z-index: 2;
+    background: #ecf0f1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+  }
+  
+  .step.active {
+    background: #3498db;
+    color: white;
+    transform: scale(1.1);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .checkout-container {
+      padding: 1rem;
+    }
+    
+    .step {
+      width: 30px;
+      height: 30px;
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .checkout-steps {
+      margin-bottom: 1.5rem;
+    }
+    
+    .step {
+      width: 25px;
+      height: 25px;
+      font-size: 0.7rem;
+    }
+  }

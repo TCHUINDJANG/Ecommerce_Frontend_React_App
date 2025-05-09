@@ -11,9 +11,10 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
     { id: 2, label: 'LProducts', path: '/products' },
     { id: 3, label: 'Categories', path: '/categories' },
     { id: 4, label: 'Dashbord', path: '/dashboard' },
-    { id: 5, label: 'Contact', path: '/contact' },
+    { id: 5, label: 'Checkout', path: '/checkout' },
     { id: 6, label: 'Login', path: '/login' },
     { id: 7, label: 'Register', path: '/register' },
+    { id: 8, label: 'Cart', path: '/cart' },
   ];
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/common/Header';
 import Footer from './Components/common/Footer';
@@ -12,6 +12,14 @@ import Register from './pages/Register';
 import CategoriesPage from './pages/CategoryPage';
 import UserDashboard from './pages/UserDashbord';
 import ProductList from './Components/Products/ProductList';
+import CheckoutForm from './Components/Checkout/CheckoutForm';
+import Cart from './pages/Cart';
+import UserProfile from './Components/UserProfile';
+
+
+
+
+
 
 
 
@@ -40,13 +48,14 @@ const App: React.FC = () => {
               <Route path="/categories/" element={<CategoriesPage />} />
               <Route path="/dashboard" element={<UserDashboard />}/>
               <Route path="/products" element={<ProductList />}/>
+              <Route path="/checkout" element={<CheckoutForm cartItems={[]} onOrderSuccess={() => {}}/>}/>
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/profile" element={<UserProfile user={[]} onUpdate={() => {}}  />} />
               {/* Ajoutez d'autres routes au besoin */}
             </Routes>
           </main>
           
           <Footer />
-
-         
         </div>
       </CartProvider>
       </AuthProvider>
