@@ -20,7 +20,7 @@ const Cart:React.FC = () => {
         const loadCart = async () => {
             try {
                 const cartData = await fetchCart();
-                console.log("Réponse du backend:", cartData)
+                console.log("Données du panier reçues:", cartData)
 
                 if (!cartData){
                   setError('Impossible de charger le panier');
@@ -30,7 +30,7 @@ const Cart:React.FC = () => {
 
                 const itemsWithProducts = await Promise.all(
                   cartData.items.map(async (item) => {
-                    const productDetails = await fetchProductById(item.id);
+                    const productDetails = await fetchProductById(item.product.id);
                     return {
                       ...item , 
                       product:productDetails,

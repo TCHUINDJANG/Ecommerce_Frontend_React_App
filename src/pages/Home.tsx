@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { PromotionAPI } from "../api/PromotionApi";
 import './Home.css';
 
+
 const Home: React.FC = () => {
     const [productsData, setProductsData] = useState<{
         count: number,

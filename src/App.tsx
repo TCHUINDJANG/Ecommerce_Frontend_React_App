@@ -15,6 +15,7 @@ import ProductList from './Components/Products/ProductList';
 import CheckoutForm from './Components/Checkout/CheckoutForm';
 import Cart from './pages/Cart';
 import UserProfile from './Components/UserProfile';
+import ContactPage from './pages/ContactPage';
 
 
 
@@ -49,7 +50,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<UserDashboard />}/>
               <Route path="/products" element={<ProductList />}/>
               <Route path="/checkout" element={<CheckoutForm cartItems={[]} onOrderSuccess={() => {}}/>}/>
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/profile" element={<UserProfile user={[]} onUpdate={() => {}}  />} />
               {/* Ajoutez d'autres routes au besoin */}
             </Routes>

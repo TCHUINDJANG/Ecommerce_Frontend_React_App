@@ -1,6 +1,6 @@
 /* Reset complet et garantie de pleine hauteur */
 html, body {
-  height: 50%;
+  height: 1%;
   margin: 0;
   padding: 0;
 }
@@ -15,7 +15,7 @@ html, body {
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 50vh;
   width: 100%;
   /* Temporaire pour visualisation */
 }
@@ -28,7 +28,8 @@ main {
   margin: 0 auto;
   padding: 2rem;
   box-sizing: border-box;
-  background-color: white; /* Pour mieux voir la zone */
+  min-height: 1vh;
+  /* Pour mieux voir la zone */
 }
 
 /* Reset supplémentaire pour éléments */

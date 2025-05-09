@@ -1,0 +1,32 @@
+.wishlistLink {
+    position: relative;
+    display: block;
+    padding: 5px;
+}
+
+.heartIcon {
+    width: 22px;
+    height: 22px;
+    fill: #2c3e50;
+    transition: fill 0.3s;
+}
+
+.wishlistLink:hover .heartIcon {
+    fill: #e74c3c;
+}
+
+.wishlistBadge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.6rem;
+    font-weight: bold;
+}

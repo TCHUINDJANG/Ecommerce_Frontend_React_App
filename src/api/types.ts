@@ -183,6 +183,16 @@ export interface Address {
   }
 
 
+
+  export interface RawCartItem {
+    id: number;
+    product_id: number;  // Important: le backend envoie product_id, pas product
+    quantity: number;
+    price: number;
+    added_at: string;
+  }
+
+
   export interface CartResponse {
     id: number;
     user: number;
@@ -207,4 +217,18 @@ export interface ApiResponse<T> {
     data?: T;
     error?: string;
     status: number;
+  }
+
+
+
+export interface ContactFormData {
+    name:string;
+    email:string;
+    subject:string;
+    message:string;
+  }
+
+
+  export interface ContactResponse {
+    message:string;
   }

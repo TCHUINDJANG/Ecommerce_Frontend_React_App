@@ -1,0 +1,64 @@
+.selector {
+    position: relative;
+}
+
+.selectorButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+}
+
+.globeIcon {
+    width: 14px;
+    height: 14px;
+    fill: white;
+}
+
+.chevron {
+    width: 10px;
+    height: 10px;
+    fill: white;
+    transition: transform 0.3s;
+}
+
+.chevron.rotate {
+    transform: rotate(180deg);
+}
+
+.languageMenu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    min-width: 120px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 100;
+}
+
+.languageOption {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.languageOption:hover {
+    background: #f5f5f5;
+}
+
+.languageOption.selected {
+    font-weight: bold;
+    color: #e74c3c;
+}

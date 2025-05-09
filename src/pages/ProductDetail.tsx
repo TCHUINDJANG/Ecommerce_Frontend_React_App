@@ -21,7 +21,7 @@ const ProductDetails: React.FC = () => {
     const handleAddToCart = () => {
         if(!product) return ;
         addToCart(product , 1)
-        navigate('/checkout')
+        navigate('/cart')
         
     };
     
